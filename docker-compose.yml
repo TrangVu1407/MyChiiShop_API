@@ -12,10 +12,12 @@ services:
   server:
     depends_on:
       - db
-    image: my_chii_shop_server
-    container_name: my_chii_shop_server
+    image: main_server
+    container_name: my_chii_server
     build:
       context: ./server
+    command: >
+     bash -c "npm run dev"
     restart: on-failure:5
     ports:
       - 1606:1606
@@ -23,3 +25,4 @@ services:
     volumes:
       - ./server:/usr/app
       - ./server/node_modules:/usr/app/node_modules
+      
