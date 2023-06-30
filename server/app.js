@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 require('./global.db');
 
+// api 
+// 1.login
+const login = require('./modules/login/login.routes');
 
 const app = express();
 app.use(function (req, res, next) {
@@ -30,6 +33,9 @@ app.use(
 app.get("/", (req, res) => {
   res.send("<h2>Văn Bình demo 16062000</h2>");
 });
+
+//login
+app.use('/api/', login);
 
 
 // Error handler
