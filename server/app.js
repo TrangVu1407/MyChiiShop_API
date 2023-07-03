@@ -7,6 +7,8 @@ require('./global.db');
 // api 
 // 1.login
 const login = require('./modules/login/login.routes');
+// 2.login
+const demo = require('./modules/demo/demo.routes');
 
 const app = express();
 app.use(function (req, res, next) {
@@ -34,8 +36,10 @@ app.get("/", (req, res) => {
   res.send("<h2>Văn Bình demo 16062000</h2>");
 });
 
-//login
+//1.login
 app.use('/api/', login);
+//2.demo
+app.use('/api/demo', demo);
 
 
 // Error handler
