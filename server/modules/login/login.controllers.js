@@ -8,6 +8,7 @@ const populateResponse = require("../../utils/populate_response");
 const {
   verifyPassword,
   signToken,
+  deleteTokenByToken,
 } = require("../../utils/account");
 
 const _ = require("lodash");
@@ -31,9 +32,7 @@ exports.login = async (req, res, next) => {
       return next(populateResponse.validateError(data.error));
     }
 
-    const account = await accountService.getAccountByEmail(
-      data.value.email
-    );
+    const account = await accountService.getAccountByEmail(data.value.email);
     if (!account) {
       return next(populateResponse.error(errors.accountDoesNotExist, 404, 200));
     }
@@ -44,8 +43,12 @@ exports.login = async (req, res, next) => {
 
     const employee = await employeeService.getEmployeeByAccountId(account.id);
     if (!employee) {
-      return next(populateResponse.error(errors.employeeDoesNotExist, 404, 200));
+      return next(
+        populateResponse.error(errors.employeeDoesNotExist, 404, 200)
+      );
     }
+    // xóa hết các token
+    await deleteTokenByToken(employee.id);
 
     const token = signToken(employee.id);
     const permissions = await permissionsService.accountPermissions(account.id);

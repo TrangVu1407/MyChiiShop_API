@@ -21,3 +21,19 @@ exports.signToken = (uid) => {
     { expiresIn: tokenDuration * 24 * 60 * 60 }
   );
 };
+
+exports.verifyToken = (token) => {
+  return jwt.decode(token, process.env.SECRET_KEY || "shop_my_chii");
+};
+
+exports.getAccountByToken = (token) => {
+  return SHOP_DB.table("web_token").where({ token }).first();
+};
+
+exports.deleteTokenByToken = (account_id) => {
+  return SHOP_DB("web_token")
+    .update({
+      is_delete: true,
+    })
+    .where("account_id", account_id);
+};
