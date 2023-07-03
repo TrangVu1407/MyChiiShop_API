@@ -7,6 +7,7 @@ exports.up = async function (knex, Promise) {
     token text,
     logout_at timestamp,
     expired_at timestamp,
+    is_delete boolean default false,
     created_at timestamp default now(),
     updated_at timestamp default now()
   );
