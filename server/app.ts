@@ -1,9 +1,10 @@
-const express = require("express");
+import express, { Request, Response, NextFunction } from 'express';
+//const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require('./global.db');
-
+ 
 // api 
 // 1.login
 const login = require('./modules/login/login.routes');
@@ -11,7 +12,7 @@ const login = require('./modules/login/login.routes');
 const demo = require('./modules/demo/demo.routes');
 
 const app = express();
-app.use(function (req, res, next) {
+app.use(function (req: Request, res: Response, next: NextFunction) {
   req.start = new Date().getTime();
   next();
 });
@@ -43,7 +44,15 @@ app.use('/api/demo', demo);
 
 
 // Error handler
-app.use((err, req, res, next) => {
+interface CustomError extends Error {
+  httpCode?: number;
+  code?: number;
+  error?: boolean;
+  data?: any;
+}
+
+// Error handler
+app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
   const content = {
     httpCode: err.httpCode ? err.httpCode : 400,
     code: err.code ? err.code : 400,
