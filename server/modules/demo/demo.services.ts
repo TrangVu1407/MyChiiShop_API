@@ -2,10 +2,11 @@ const _ = require("lodash");
 
 import type { dataServices } from "./demo.controllers";
 
-exports.getList = async () => {
+exports.getList = async (data: dataServices) => {
   const list: dataServices = {
-    name: "Mỹ chi",
-    age: 12,
+    name: data.name,
+    age: data.age,
+    address: data.address,
   };
   return list;
 };
