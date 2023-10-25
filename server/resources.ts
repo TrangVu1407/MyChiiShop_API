@@ -1,4 +1,10 @@
 const app = require("express");
-global.router = app.Router();
+const router = app.Router();
 
-global.authMiddleware = require("./middleware/auth");
+interface ObjectData {
+  isAuthenticate: Promise<any>;
+  checkRole: Promise<any>;
+}
+const authMiddleware: ObjectData = require("./middleware/auth");
+
+export { router, authMiddleware };
