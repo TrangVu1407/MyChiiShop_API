@@ -11,6 +11,8 @@ require('./resources');
 const login = require('./modules/login/login.routes');
 // 2.login
 const demo = require('./modules/demo/demo.routes');
+// loại sản phẩm
+const productType = require('./modules/product_type/product_type.routes')
 
 const app = express();
 app.use(function (req: Request, res: Response, next: NextFunction) {
@@ -42,6 +44,8 @@ app.get("/", (req, res) => {
 app.use('/api/', login);
 //2.demo
 app.use('/api/demo', demo);
+// loại sản phẩm
+app.use('/api/product_type', productType);
 
 
 // Error handler
