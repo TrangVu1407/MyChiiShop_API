@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require('./global.db');
+require('./resources');
  
 // api 
 // 1.login

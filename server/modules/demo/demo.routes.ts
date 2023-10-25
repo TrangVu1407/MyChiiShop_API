@@ -1,8 +1,4 @@
-const app = require("express");
-const router = app.Router();
-
 const controller = require("./demo.controllers");
-const authMiddleware = require("../../middleware/auth");
 
 router.get(
   "/list",
