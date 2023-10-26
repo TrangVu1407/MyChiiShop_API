@@ -9,12 +9,12 @@ function messageError() {
       };
     },
 
-    error(message: "Oops! Something went wrong", code: 401, httpCode: 401) {
+    error(message?: string, code?: number, httpCode?: number) {
       return {
         error: true,
-        httpCode,
-        code,
-        message,
+        httpCode: httpCode ? httpCode : 201,
+        code: code ? code : 201,
+        message: message ? message : "Oops! Something went wrong",
       };
     },
 

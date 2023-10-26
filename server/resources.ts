@@ -5,8 +5,14 @@ interface ObjectData {
 }
 const authMiddleware: ObjectData = require("./middleware/auth");
 
-import {messageError} from "./utils/populate_response"
+import { messageError } from "./utils/populate_response";
+import type { messagePopulateError } from "./utils/populate_error";
 
-const populateResponse = messageError()
+const populateResponse = messageError();
 
-export { authMiddleware, populateResponse };
+interface ObjectPopulateError {
+  isExisting: messagePopulateError;
+}
+const populateError: ObjectPopulateError = require("./utils/populate_error");
+
+export { authMiddleware, populateResponse, populateError };
