@@ -1,11 +1,12 @@
 const _ = require("lodash");
 const moment = require("moment");
+import { Response, NextFunction } from "express";
 
 const webTokenService = require("../modules/web_token/web_token.services");
 const permissionsService = require("../modules/permissions/permissions.services");
 const { verifyToken, getAccountByToken } = require("../utils/account");
 
-const populateResponse = require("../utils/populate_response");
+import { populateResponse } from "../resources";
 
 const errors = {
   unauthorized: "Unauthorized error",
@@ -17,7 +18,11 @@ const errors = {
   errorToken: "Sorry! token no use",
 };
 
-exports.isAuthenticate = async (req, res, next) => {
+exports.isAuthenticate = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (!req.headers.authorization)
       return next(populateResponse.error(errors.unauthorized, 401, 401));
@@ -46,12 +51,12 @@ exports.isAuthenticate = async (req, res, next) => {
     req.account_id = data.account_id;
 
     return next();
-  } catch (e) {
+  } catch (e: any) {
     next(populateResponse.error(e.message, 400, 403));
   }
 };
 
-exports.checkRole = async (req, res, next) => {
+exports.checkRole = async (req: any, res: Response, next: NextFunction) => {
   try {
     const str = req.originalUrl.split("?");
     const accessible = await permissionsService.checkAccessibleAPI(

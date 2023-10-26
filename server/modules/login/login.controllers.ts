@@ -4,7 +4,8 @@ const webTokenService = require("../web_token/web_token.services");
 const employeeService = require("../employee/employee.services");
 
 const Joi = require("@hapi/joi");
-const populateResponse = require("../../utils/populate_response");
+import { Request, Response, NextFunction } from "express";
+import { populateResponse } from "../../resources";
 const {
   verifyPassword,
   signToken,
@@ -21,7 +22,7 @@ const errors = {
   incorrectPassword: "Incorrect password",
 };
 
-exports.login = async (req, res, next) => {
+exports.login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = Joi.object({
       email: Joi.string().required(),
@@ -57,10 +58,7 @@ exports.login = async (req, res, next) => {
       account_id: account.id,
       token: token,
       logout_at: null,
-      expired_at: moment().add(
-        process.env.TOKEN_DURATION * 24 * 60 * 60,
-        "seconds"
-      ),
+      expired_at: moment().add(160600 * 24 * 60 * 60, "seconds"),
     };
     await webTokenService.insertWebToken(webToken);
     next(
