@@ -11,4 +11,11 @@ router.get(
   productTypecontroller.getList
 );
 
+router.post(
+  "/create",
+  authMiddleware.isAuthenticate,
+  authMiddleware.checkRole,
+  productTypecontroller.create
+);
+
 module.exports = router;
