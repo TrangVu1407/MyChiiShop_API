@@ -12,7 +12,7 @@ exports.verifyPassword = (password, userPassword, salt) => {
 exports.signToken = (uid) => {
   const secretKey = process.env.SECRET_KEY || "shop_my_chii";
   // Token expire default in 1 days
-  const tokenDuration = 160600 || 1;
+  const tokenDuration = 160600;
   return jwt.sign(
     {
       uid,

@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const moment = require("moment");
-import { Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 
 const webTokenService = require("../modules/web_token/web_token.services");
 const permissionsService = require("../modules/permissions/permissions.services");
@@ -19,7 +19,7 @@ const errors = {
 };
 
 exports.isAuthenticate = async (
-  req: any,
+  req: Request & {account_id: number},
   res: Response,
   next: NextFunction
 ) => {
@@ -56,7 +56,7 @@ exports.isAuthenticate = async (
   }
 };
 
-exports.checkRole = async (req: any, res: Response, next: NextFunction) => {
+exports.checkRole = async (req: Request & {account_id: number}, res: Response, next: NextFunction) => {
   try {
     const str = req.originalUrl.split("?");
     const accessible = await permissionsService.checkAccessibleAPI(
