@@ -21,6 +21,7 @@ services:
     restart: on-failure:5
     ports:
       - 1606:1606
+      - 1417:1417
     env_file: server.env
     volumes:
       - ./server:/usr/app
