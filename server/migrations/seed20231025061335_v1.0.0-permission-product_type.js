@@ -2,9 +2,9 @@ exports.up = async function (knex) {
   return await knex.raw(`
     INSERT INTO permission(id, name_sort, name, screen, screen_function) VALUES 
       (10, 'Quản lý - Loại sản phẩm', 'Quản lý - Loại sản phẩm - Xem', '/product_type', 'Seen'),
-      (11, 'Quản lý - Loại sản phẩm', 'Quản lý - Loại sản phẩm - Tạo mới', '/product_type', 'Create'),
-      (12, 'Quản lý - Loại sản phẩm', 'Quản lý - Loại sản phẩm - Cập nhật', '/product_type', 'Update'),
-      (13, 'Quản lý - Loại sản phẩm', 'Quản lý - Loại sản phẩm - Xóa', '/product_type', 'Delete');
+      (11, 'Quản lý - Loại sản phẩm', 'Quản lý - Loại sản phẩm - Tạo mới', '/product_type_create', 'Create'),
+      (12, 'Quản lý - Loại sản phẩm', 'Quản lý - Loại sản phẩm - Cập nhật', '/product_type_update', 'Update'),
+      (13, 'Quản lý - Loại sản phẩm', 'Quản lý - Loại sản phẩm - Xóa', '/product_type_delete', 'Delete');
       
       INSERT INTO permission_api(permission_id, api_endpoint, notes) VALUES
       (10, '/api/product_type/list', 'Bình wrote this v1.0.0 - 25.10.2023'),
