@@ -18,9 +18,9 @@ exports.isExisting = (valueIsExisting: isExistingServices) => {
   return SHOP_DB("product_type")
     .where({
       shop_id: valueIsExisting.shop_id,
-      code: valueIsExisting.code,
+      //code: valueIsExisting.code,
       name: valueIsExisting.name,
-      is_delete: valueIsExisting.is_delete,
+      is_delete: false,
     })
     .first();
 };

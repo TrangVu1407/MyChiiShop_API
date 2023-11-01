@@ -46,11 +46,11 @@ exports.getList = async (req: Request, res: Response, next: NextFunction) => {
 exports.create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const schema = Joi.object({
-      shop_id: Joi.string().required(),
-      code: Joi.number().min(1).max(12).required(),
-      name: Joi.number().required(),
-      describe: Joi.number().required(),
-      notes: Joi.number().optional().allow(null),
+      shop_id: Joi.number().required(),
+      code: Joi.string().optional().allow(null),
+      name: Joi.string().required(),
+      describe: Joi.string().required(),
+      notes: Joi.string().optional().allow(null),
     }).validate(req.body);
 
     if (schema.error) return next(populateResponse.validateError(schema.error));
@@ -61,7 +61,7 @@ exports.create = async (req: Request, res: Response, next: NextFunction) => {
     };
 
     //kiểm tra loại sản phẩm đã tồn tại ?
-    const isExisting = await service.isExisting(value);
+    const isExisting = await service.isExisting(schema.value);
     if (isExisting)
       return next(
         populateResponse.error(
