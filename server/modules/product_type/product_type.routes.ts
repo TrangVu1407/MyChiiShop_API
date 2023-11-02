@@ -18,4 +18,12 @@ router.post(
   productTypecontroller.create
 );
 
+router.post(
+  "/update",
+  authMiddleware.isAuthenticate,
+  authMiddleware.checkRole,
+  productTypecontroller.update
+);
+
+
 module.exports = router;

@@ -3,7 +3,7 @@ const _ = require("lodash");
 import type {
   getListServices,
   isExistingServices,
-  createServices,
+  dataServices,
 } from "./product_type.controllers";
 
 // danh sánh loại sản phẩm
@@ -25,10 +25,19 @@ exports.isExisting = (valueIsExisting: isExistingServices) => {
       name: valueIsExisting.name,
       is_delete: false,
     })
+    .modify((builder) => {
+      valueIsExisting.id &&
+        builder.andWhere("product_type.id", "!=", valueIsExisting.id);
+    })
     .first();
 };
 
 // tạo sản phẩm
-exports.create = (body: createServices) => {
+exports.create = (body: dataServices) => {
   return SHOP_DB("product_type").insert(body).returning("id");
+};
+
+// cập nhật sản phẩm
+exports.update = (id: number, body: dataServices) => {
+  return SHOP_DB("product_type").update(body).where("id", id);
 };
