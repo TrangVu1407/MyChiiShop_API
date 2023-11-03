@@ -108,3 +108,19 @@ exports.update = async (req: Request, res: Response, next: NextFunction) => {
     next(e);
   }
 };
+
+exports.delete = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const schema = Joi.object({
+      id: Joi.number().required(),
+    }).validate(req.body);
+
+    if (schema.error) return next(populateResponse.validateError(schema.error));
+
+    const data = await service.delete(schema.value.id);
+
+    next(populateResponse.success(data));
+  } catch (e) {
+    next(e);
+  }
+};

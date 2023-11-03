@@ -25,5 +25,11 @@ router.post(
   productTypecontroller.update
 );
 
+router.post(
+  "/delete",
+  authMiddleware.isAuthenticate,
+  authMiddleware.checkRole,
+  productTypecontroller.delete
+);
 
 module.exports = router;

@@ -41,3 +41,8 @@ exports.create = (body: dataServices) => {
 exports.update = (id: number, body: dataServices) => {
   return SHOP_DB("product_type").update(body).where("id", id);
 };
+
+// xóa sản phẩm
+exports.delete = (id: number) => {
+  return SHOP_DB("product_type").update({is_delete: true}).where("id", id);
+};
