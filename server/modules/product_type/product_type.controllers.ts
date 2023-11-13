@@ -50,10 +50,10 @@ exports.create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const schema = Joi.object({
       shop_id: Joi.number().required(),
-      code: Joi.string().optional().allow(null),
+      code: Joi.string().optional().allow(null, ""),
       name: Joi.string().required(),
       describe: Joi.string().required(),
-      notes: Joi.string().optional().allow(null),
+      notes: Joi.string().optional().allow(null, ""),
     }).validate(req.body);
 
     if (schema.error) return next(populateResponse.validateError(schema.error));
@@ -82,10 +82,10 @@ exports.update = async (req: Request, res: Response, next: NextFunction) => {
     const schema = Joi.object({
       id: Joi.number().required(),
       shop_id: Joi.number().required(),
-      code: Joi.string().optional().allow(null),
+      code: Joi.string().optional().allow(null, ""),
       name: Joi.string().required(),
       describe: Joi.string().required(),
-      notes: Joi.string().optional().allow(null),
+      notes: Joi.string().optional().allow(null, ""),
     }).validate(req.body);
 
     if (schema.error) return next(populateResponse.validateError(schema.error));
