@@ -12,7 +12,9 @@ const login = require('./modules/login/login.routes');
 // 2.login
 const demo = require('./modules/demo/demo.routes');
 // loại sản phẩm
-const productType = require('./modules/product_type/product_type.routes')
+const productType = require('./modules/product_type/product_type.routes');
+// kích thước sản phẩm
+const productSize = require('./modules/product_size/product_size.routes')
 
 const app = express();
 app.use(function (req: Request, res: Response, next: NextFunction) {
@@ -46,6 +48,8 @@ app.use('/api/', login);
 app.use('/api/demo', demo);
 // loại sản phẩm
 app.use('/api/product_type', productType);
+// 
+app.use('/api/product_size', productSize);
 
 
 // Error handler
