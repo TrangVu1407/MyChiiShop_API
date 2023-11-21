@@ -42,6 +42,12 @@ exports.getList = async (req: Request, res: Response, next: NextFunction) => {
     };
 
     const data = await service.getList(valueIsExisting);
+    // LẤY THÊM SỐ THỨ TIWJ CHO KÍCH THƯỚC
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].product_sizes.length; j++) {
+        data[i].product_sizes[j].stt = j + 1;
+      }
+    }
 
     next(populateResponse.success(data));
   } catch (e) {
