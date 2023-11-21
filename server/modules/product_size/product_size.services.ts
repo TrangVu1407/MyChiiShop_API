@@ -8,13 +8,34 @@ import type {
 
 // danh sánh loại sản phẩm
 exports.getList = async (value: getListServices) => {
-  return SHOP_DB("product_size")
-    .select("product_size.*")
+  const BUILD_JSON = SHOP_DB.raw(`
+  json_agg(json_build_object(
+  'id', product_size.id,
+  'name', product_size.name, 
+  'describe', product_size.describe,
+  'code', product_size.code,
+  'notes', product_size.notes
+    )) as product_sizes`);
+
+  return SHOP_DB("product_type")
+    .select(
+      "product_type.name as product_type_name",
+      "product_type.describe as product_type_describe",
+      "product_type.id as id",
+      "product_type.notes as product_type_notes",
+      BUILD_JSON
+    )
+    .innerJoin(
+      "product_size",
+      "product_size.product_type_id",
+      "product_type.id"
+    )
     .where({
-      "product_size.is_delete": value.is_delete,
-      "product_size.shop_id": value.shop_id,
+      "product_type.is_delete": value.is_delete,
+      "product_type.shop_id": value.shop_id,
     })
-    .orderBy("product_size.id", "desc");
+    .groupBy(["product_type.id"])
+    .orderBy("product_type.id", "desc");
 };
 
 // kiểm tra sản phẩm đã tồn tại
@@ -45,5 +66,5 @@ exports.update = (id: number, body: dataServices) => {
 
 // xóa sản phẩm
 exports.delete = (id: number) => {
-  return SHOP_DB("product_size").update({is_delete: true}).where("id", id);
+  return SHOP_DB("product_size").update({ is_delete: true }).where("id", id);
 };
