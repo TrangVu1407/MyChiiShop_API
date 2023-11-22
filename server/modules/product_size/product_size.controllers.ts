@@ -15,12 +15,7 @@ export interface isExistingServices extends getListServices {
   id: number;
 }
 export interface dataServices {
-  product_type_id: number;
-  shop_id: number;
-  code: string;
-  name: string;
-  describe: string;
-  notes: string;
+  product_sizes: [];
 }
 
 exports.getList = async (req: Request, res: Response, next: NextFunction) => {
@@ -58,26 +53,32 @@ exports.getList = async (req: Request, res: Response, next: NextFunction) => {
 exports.create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const schema = Joi.object({
-      shop_id: Joi.number().required(),
-      product_type_id: Joi.number().required(),
-      code: Joi.string().optional().allow(null, ""),
-      name: Joi.string().required(),
-      describe: Joi.string().required(),
-      notes: Joi.string().optional().allow(null, ""),
+      product_sizes: Joi.array()
+        .items(
+          Joi.object({
+            shop_id: Joi.number().required(),
+            product_type_id: Joi.number().required(),
+            name: Joi.string().required(),
+            describe: Joi.string().required(),
+            notes: Joi.string().optional().allow(null, ""),
+          })
+        )
+        .min(0)
+        .required(),
     }).validate(req.body);
 
     if (schema.error) return next(populateResponse.validateError(schema.error));
 
     //kiểm tra loại sản phẩm đã tồn tại ?
-    const isExisting = await service.isExisting(schema.value);
-    if (isExisting)
-      return next(
-        populateResponse.error(
-          populateError.isExisting.message,
-          populateError.isExisting.code,
-          populateError.isExisting.httpCode
-        )
-      );
+    // const isExisting = await service.isExisting(schema.value);
+    // if (isExisting)
+    //   return next(
+    //     populateResponse.error(
+    //       populateError.isExisting.message,
+    //       populateError.isExisting.code,
+    //       populateError.isExisting.httpCode
+    //     )
+    //   );
 
     const data = await service.create(schema.value);
 

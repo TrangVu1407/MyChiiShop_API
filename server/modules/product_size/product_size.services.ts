@@ -56,7 +56,20 @@ exports.isExisting = (valueIsExisting: isExistingServices) => {
 
 // tạo sản phẩm
 exports.create = (body: dataServices) => {
-  return SHOP_DB("product_size").insert(body).returning("id");
+  const CREATION_FAILED = new Error("error");
+
+  return SHOP_DB.transaction(async (trx) => {
+    let productDetails = body.product_sizes;
+
+    const dbProductDetails = await trx("product_size")
+      .insert(productDetails)
+      .returning("id");
+
+    if (dbProductDetails.length === 0)
+      return await trx.rollback(CREATION_FAILED);
+
+    return await trx.commit({ detailIds: productDetails });
+  });
 };
 
 // cập nhật sản phẩm
