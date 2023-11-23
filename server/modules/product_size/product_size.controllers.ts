@@ -14,8 +14,22 @@ export interface isExistingServices extends getListServices {
   name: string;
   id: number;
 }
+
+interface aaaa {
+  id: number,
+  name: string,
+  describe: string,
+  notes?: string
+}
 export interface dataServices {
   product_sizes: [];
+}
+
+export interface dataUpdateServices {
+  product_sizes: {
+    addNew: [],
+    update: aaaa[],
+  };
 }
 
 exports.getList = async (req: Request, res: Response, next: NextFunction) => {
@@ -90,28 +104,34 @@ exports.create = async (req: Request, res: Response, next: NextFunction) => {
 
 exports.update = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const schema = Joi.object({
-      id: Joi.number().required(),
-      shop_id: Joi.number().required(),
-      product_type_id: Joi.number().required(),
-      code: Joi.string().optional().allow(null, ""),
+    const PRODUCT_SIZE = {
       name: Joi.string().required(),
       describe: Joi.string().required(),
       notes: Joi.string().optional().allow(null, ""),
+    };
+    const ADDITIONAL_FIELDS = {
+      id: Joi.number().required(),
+    };
+
+    const schema = Joi.object({
+      product_sizes: Joi.object({
+        addNew: Joi.array().items({ ...PRODUCT_SIZE }),
+        update: Joi.array().items({ ...PRODUCT_SIZE, ...ADDITIONAL_FIELDS }),
+      }).required(),
     }).validate(req.body);
 
     if (schema.error) return next(populateResponse.validateError(schema.error));
 
     //kiểm tra loại sản phẩm đã tồn tại ?
-    const isExisting = await service.isExisting(schema.value);
-    if (isExisting)
-      return next(
-        populateResponse.error(
-          populateError.isExisting.message,
-          populateError.isExisting.code,
-          populateError.isExisting.httpCode
-        )
-      );
+    // const isExisting = await service.isExisting(schema.value);
+    // if (isExisting)
+    //   return next(
+    //     populateResponse.error(
+    //       populateError.isExisting.message,
+    //       populateError.isExisting.code,
+    //       populateError.isExisting.httpCode
+    //     )
+    //   );
 
     const data = await service.update(schema.value.id, schema.value);
 

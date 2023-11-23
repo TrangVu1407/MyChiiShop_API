@@ -4,6 +4,7 @@ import type {
   getListServices,
   isExistingServices,
   dataServices,
+  dataUpdateServices,
 } from "./product_size.controllers";
 
 // danh sánh loại sản phẩm
@@ -73,8 +74,29 @@ exports.create = (body: dataServices) => {
 };
 
 // cập nhật sản phẩm
-exports.update = (id: number, body: dataServices) => {
-  return SHOP_DB("product_size").update(body).where("id", id);
+exports.update = (id: number, body: dataUpdateServices) => {
+  const CREATION_FAILED = new Error("error");
+
+  return SHOP_DB.transaction(async (trx) => {
+    // add new
+    if (body.product_sizes.addNew.length > 0) {
+      const dbProductDetails = await trx("product_size")
+        .insert(body.product_sizes.addNew)
+        .returning("id");
+      if (dbProductDetails.length === 0)
+        return await trx.rollback(CREATION_FAILED);
+    }
+    // update
+    if (body.product_sizes.update.length > 0) {
+      for (let i = 0; i < body.product_sizes.update.length; i++) {
+        await trx("product_size")
+          .update(_.omit(body.product_sizes.update[i]), ['id'])
+          .where('id', body.product_sizes.update[i].id)
+      }
+    }
+
+    return await trx.commit({ detailIds: body.product_sizes.addNew });
+  });
 };
 
 // xóa sản phẩm
