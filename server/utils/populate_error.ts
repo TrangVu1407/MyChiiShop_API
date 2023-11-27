@@ -10,4 +10,10 @@ let isExisting: messagePopulateError = {
   httpCode: 209,
 };
 
-export { isExisting };
+let noData: messagePopulateError = {
+  message: "Không có dữ liệu",
+  code: 210,
+  httpCode: 210,
+};
+
+export { isExisting, noData };

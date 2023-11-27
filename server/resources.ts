@@ -12,6 +12,7 @@ const populateResponse = messageError();
 
 interface ObjectPopulateError {
   isExisting: messagePopulateError;
+  noData: messagePopulateError;
 }
 const populateError: ObjectPopulateError = require("./utils/populate_error");
 

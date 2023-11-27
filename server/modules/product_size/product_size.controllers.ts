@@ -1,4 +1,5 @@
 const Joi = require("@hapi/joi");
+const _ = require("lodash");
 import { Request, Response, NextFunction } from "express";
 
 const service = require("./product_size.services");
@@ -16,10 +17,10 @@ export interface isExistingServices extends getListServices {
 }
 
 interface aaaa {
-  id: number,
-  name: string,
-  describe: string,
-  notes?: string
+  id: number;
+  name: string;
+  describe: string;
+  notes?: string;
 }
 export interface dataServices {
   product_sizes: [];
@@ -27,8 +28,8 @@ export interface dataServices {
 
 export interface dataUpdateServices {
   product_sizes: {
-    addNew: [],
-    update: aaaa[],
+    addNew: [];
+    update: aaaa[];
   };
 }
 
@@ -122,6 +123,15 @@ exports.update = async (req: Request, res: Response, next: NextFunction) => {
 
     if (schema.error) return next(populateResponse.validateError(schema.error));
 
+    if (_.isEmpty(schema.value.product_sizes)) {
+      return next(
+        populateResponse.error(
+          populateError.noData.message,
+          populateError.noData.code,
+          populateError.noData.httpCode
+        )
+      );
+    }
     //kiểm tra loại sản phẩm đã tồn tại ?
     // const isExisting = await service.isExisting(schema.value);
     // if (isExisting)
