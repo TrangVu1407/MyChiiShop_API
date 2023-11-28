@@ -79,7 +79,7 @@ exports.update = (id: number, body: dataUpdateServices) => {
 
   return SHOP_DB.transaction(async (trx) => {
     // add new
-    if (body.product_sizes.addNew.length > 0) {
+    if ("addNew" in body.product_sizes.addNew) {
       const dbProductDetails = await trx("product_size")
         .insert(body.product_sizes.addNew)
         .returning("id");
@@ -87,11 +87,11 @@ exports.update = (id: number, body: dataUpdateServices) => {
         return await trx.rollback(CREATION_FAILED);
     }
     // update
-    if (body.product_sizes.update.length > 0) {
+    if ("update" in body.product_sizes.update) {
       for (let i = 0; i < body.product_sizes.update.length; i++) {
         await trx("product_size")
-          .update(_.omit(body.product_sizes.update[i]), ['id'])
-          .where('id', body.product_sizes.update[i].id)
+          .update(_.omit(body.product_sizes.update[i]), ["id"])
+          .where("id", body.product_sizes.update[i].id);
       }
     }
 
