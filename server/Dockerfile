@@ -13,4 +13,4 @@ RUN npm install
 # Cài đặt các gói global knex và knex-migrate
 RUN npm install -g knex knex-migrate && knex --version
 
-CMD ["../local.sh"]
+RUN chmod +x ../local.sh
