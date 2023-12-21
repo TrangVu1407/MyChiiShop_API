@@ -1,5 +1,5 @@
 # Sử dụng image Node 15
-FROM node:latest
+FROM node:15
 
 # Đặt thư mục làm việc trong container
 WORKDIR /usr/app
