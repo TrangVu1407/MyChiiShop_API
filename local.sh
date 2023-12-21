@@ -1,3 +1,3 @@
 #!/bin/bash
-docker-compose build
-docker-compose up
+/usr/local/bin/docker-compose build
+/usr/local/bin/docker-compose up
