@@ -5,7 +5,7 @@ FROM node:15
 WORKDIR /usr/app
 
 # Copy file package.json vào thư mục hiện tại của container
-COPY package.json ./
+COPY ./server/package.json ./server/package-lock.json ./
 
 # Cài đặt các gói npm từ package.json
 RUN npm install
