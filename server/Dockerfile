@@ -1,7 +1,14 @@
+# Sử dụng image Node 15
 FROM node:15
+
+# Đặt thư mục làm việc trong container
 WORKDIR /usr/app
-COPY package.json ./
+
+# Copy file package.json vào thư mục hiện tại của container
+COPY package.json package-lock.json ./
+
+# Cài đặt các gói npm từ package.json
 RUN npm install
 
-RUN yarn global add knex knex-migrate
-# CMD ["npm", "run", "dev"]
+# Cài đặt các gói global knex và knex-migrate
+RUN npm install -g knex knex-migrate
