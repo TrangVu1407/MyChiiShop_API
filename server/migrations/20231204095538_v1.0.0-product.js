@@ -4,6 +4,7 @@ exports.up = async function (knex, Promise) {
       id bigserial primary key,
       shop_id bigint REFERENCES shop(id),
       gender_id bigint REFERENCES gender(id),
+      product_type_id bigint REFERENCES product_type(id),
       code text,
       name text,
       describe text,
