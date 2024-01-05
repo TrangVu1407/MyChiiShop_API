@@ -49,7 +49,7 @@ exports.login = async (req: Request, res: Response, next: NextFunction) => {
       );
     }
     // xóa hết các token
-    await deleteTokenByToken(employee.id);
+    //await deleteTokenByToken(employee.id);
 
     const token = signToken(employee.id);
     const permissions = await permissionsService.accountPermissions(account.id);
