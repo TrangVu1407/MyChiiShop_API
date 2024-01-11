@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 const _ = require("lodash");
 import type { isExistingServices, dataServices } from "./product.controllers";
 
@@ -35,12 +37,45 @@ exports.create = async (body: dataServices) => {
         .insert(productData)
         .returning("id");
 
-      // Insert images using the obtained product ID
-      const imageInserts = body.image.map((image) => ({
-        product_id: productId.id,
-        //name: image.name,
-        url: "Bình",
-      }));
+      interface ImageInsert {
+        product_id: number;
+        url: string;
+      }
+
+      const saveImage = (
+        base64String: string,
+        productId: number
+      ): ImageInsert => {
+        const imageBuffer = Buffer.from(base64String, "base64");
+        const imageFolder = `san_pham_${productId}`;
+        const uniqueFileName = `${Date.now()}.jpg`;
+        const imagePath = path.join(
+          __dirname,
+          "../../utils/image_product",
+          imageFolder,
+          uniqueFileName
+        );
+
+        // Kiểm tra nếu thư mục không tồn tại, tạo mới
+        if (
+          !fs.existsSync(
+            path.join(__dirname, "../../utils/image_product", imageFolder)
+          )
+        ) {
+          fs.mkdirSync(
+            path.join(__dirname, "../../utils/image_product", imageFolder)
+          );
+        }
+
+        fs.writeFileSync(imagePath, imageBuffer);
+
+        return { product_id: productId, url: imagePath };
+      };
+
+      const imageInserts: ImageInsert[] = body.image.map((image) =>
+        saveImage(image.img, productId.id)
+      );
+
       await trx("product_image").insert(imageInserts);
 
       // Insert product details using the obtained product ID
