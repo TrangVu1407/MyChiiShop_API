@@ -2,6 +2,7 @@ exports.up = async function (knex, Promise) {
   await knex.raw(`
     create table product_detail(
       id bigserial primary key,
+      product_id bigint REFERENCES product(id),
       product_size_id bigint REFERENCES product_size(id),
       product_color_id bigint REFERENCES product_color(id),
       quantity numeric,

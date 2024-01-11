@@ -17,6 +17,8 @@ const productType = require('./modules/product_type/product_type.routes');
 const productSize = require('./modules/product_size/product_size.routes')
 // màu
 const productColor = require('./modules/product_color/product_color.routes');
+// sản phẩm
+const product = require('./modules/product/product.routes');
 
 const app = express();
 app.use(function (req: Request, res: Response, next: NextFunction) {
@@ -54,6 +56,8 @@ app.use('/api/product_type', productType);
 app.use('/api/product_size', productSize);
 //
 app.use('/api/product_color', productColor);
+//
+app.use('/api/product', product);
 
 // Error handler
 interface CustomError extends Error {
