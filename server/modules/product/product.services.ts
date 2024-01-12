@@ -52,9 +52,17 @@ exports.create = async (body: dataServices) => {
           base64String.length - 1
         );
         const imageBuffer = Buffer.from(image_v64, "base64");
-        // Use file-type.fromBuffer to get the file type
+        // Extract mime type from base64 data
+        const mimeTypeMatch = base64String.match(/^data:(.*?);base64,/);
+        const mimeType = mimeTypeMatch
+          ? mimeTypeMatch[1]
+          : "application/octet-stream";
+
+        // Derive file extension from mime type
+        const extension = mimeType.split("/")[1] || "jpg";
+
         const imageFolder = `san_pham_${productId}`;
-        const uniqueFileName = `${Date.now()}.jpg`;
+        const uniqueFileName = `${Date.now()}.${extension}`;
         const imagePath = path.join(
           __dirname,
           "../../utils/image_product",
