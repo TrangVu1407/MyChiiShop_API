@@ -46,7 +46,13 @@ exports.create = async (body: dataServices) => {
         base64String: string,
         productId: number
       ): ImageInsert => {
-        const imageBuffer = Buffer.from(base64String, "base64");
+        const vitri = base64String.indexOf(",");
+        const image_v64 = base64String.substring(
+          vitri + 1,
+          base64String.length - 1
+        );
+        const imageBuffer = Buffer.from(image_v64, "base64");
+        // Use file-type.fromBuffer to get the file type
         const imageFolder = `san_pham_${productId}`;
         const uniqueFileName = `${Date.now()}.jpg`;
         const imagePath = path.join(
@@ -66,7 +72,6 @@ exports.create = async (body: dataServices) => {
             path.join(__dirname, "../../utils/image_product", imageFolder)
           );
         }
-
         fs.writeFileSync(imagePath, imageBuffer);
 
         return { product_id: productId, url: imagePath };
