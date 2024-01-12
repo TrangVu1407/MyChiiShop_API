@@ -44,7 +44,8 @@ exports.create = async (body: dataServices) => {
 
       const saveImage = (
         base64String: string,
-        productId: number
+        productId: number,
+        name: string
       ): ImageInsert => {
         const vitri = base64String.indexOf(",");
         const image_v64 = base64String.substring(
@@ -62,7 +63,10 @@ exports.create = async (body: dataServices) => {
         const extension = mimeType.split("/")[1] || "jpg";
 
         const imageFolder = `san_pham_${productId}`;
-        const uniqueFileName = `${Date.now()}.${extension}`;
+        const uniqueFileName = `${name.replace(
+          /\s+/g,
+          "_"
+        )}_${Date.now()}.${extension}`;
         const imagePath = path.join(
           __dirname,
           "../../utils/image_product",
@@ -86,7 +90,7 @@ exports.create = async (body: dataServices) => {
       };
 
       const imageInserts: ImageInsert[] = body.image.map((image) =>
-        saveImage(image.img, productId.id)
+        saveImage(image.img, productId.id, image.name)
       );
 
       await trx("product_image").insert(imageInserts);
