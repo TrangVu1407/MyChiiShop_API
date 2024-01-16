@@ -3,6 +3,7 @@ exports.up = async function (knex, Promise) {
     create table product_color(
       id bigserial primary key,
       shop_id bigint REFERENCES shop(id),
+      product_type_id bigint REFERENCES product_type(id),
       code text,
       name text,
       describe text,
@@ -18,13 +19,6 @@ exports.up = async function (knex, Promise) {
     BEFORE UPDATE ON product_color
     FOR EACH ROW
     EXECUTE PROCEDURE trigger_set_updated_at();
-  `);
-
-  await knex.raw(`
-    INSERT INTO product_color(id, shop_id, code, name, describe, notes) VALUES 
-      (1, 1, 'RED', 'Màu đỏ', 'Màu đỏ như ông mặt trời', 'Sản phẩm màu đỏ'),
-      (2, 1, 'BLUE', 'Màu xanh', 'Màu xanh như ông mặt trời', 'Sản phẩm màu xanh'),
-      (3, 1, 'ORANGE', 'Màu cam', 'Màu cam như ông mặt trời', 'Sản phẩm màu cam');
   `);
 };
 
